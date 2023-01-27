@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<h1 align="center">Standard Calculator</h1> <br>
+<title> 
+Calculator
+</title>
+</head>
+
+<body>
+<table align = "center"> 
+	<tr>
+       <td colspan="4"><input type="text" id="screen" align="right"></td>
+      
+	<td>
+   </tr>
+   <tr class="row1">
+      <td><input type="button" value="AC"  onClick="display('AC')"></td>
+      <td><input type="button" value=" C "  onClick="display('C')"></td>
+      <td><input type="button" value=" % "  onClick="display('%')"></td>
+      <td><input type="button"  value=" ÷ " onClick="display('÷')"/></td>
+   </tr>
+   <tr class="row2">
+      <td><input type="button" value=" 7  " id="7" onClick="display('7')"> </td>
+      <td><input type="button" value=" 8  " id="8" onClick="display('8')"></td>
+      <td><input type="button" value=" 9  " id="9" onClick="display('9')"></td>
+	<td><input type="button" value=" x  " id="x" onClick="display('x')"></td>
+   </tr>	
+	<tr class="row3">
+      <td><input type="button" value=" 4  "  onClick="display('4')"> </td>
+      <td><input type="button" value=" 5  "  onClick="display('5')"></td>
+      <td><input type="button" value=" 6  "  onClick="display('6')"></td>
+	<td><input type="button" value=" +  "  onClick="display('+')"></td>
+   </tr>
+	<tr class="row4">
+      <td> <input type="button" value=" 1  " onClick="display('1')"> </td>
+      <td><input type="button" value=" 2  " onClick="display('2')"></td>
+      <td><input type="button" value=" 3  "  onClick="display('3')"></td>
+	<td><input type="button" value=" -   "  onClick="display('-')"></td>
+   </tr>
+	<tr class="row5">
+      <td> <input type="button" value="+/- "  onClick="display('pm')"/></td>
+      <td><input type="button" value=" 0  " onClick="display('0')"></td>
+      <td><input type="button" value=" .   "  onClick="display('.')"></td>
+	
+	<td><input type="button" value=" =  " id="equal" onClick="display('=')"></td>
+   </tr>
+
+	
+</table>
+<script>
+
+let val = 0.0;
+var fnum =false;
+var sign = null;
+let current =0.0; 
+let current2 =0.0;
+let dec1 = false;
+let dec2 = false;
+let mod = true;
+let num = 10;
+let num2 =10;
+var scrn = document.getElementById("screen");
+
+function display(symb){
+
+   if (symb == '.' && !fnum){
+      let symbol = '';
+      scrn.value =current + '.';
+      dec1 = true;
+   }
+   else if (symb == '.' && fnum){
+      scrn.value =current2 + '.';
+      dec2 = true;
+   }
+   if (symb == 'pm' && current != 0 && !fnum){
+      current = current * -1;
+      scrn.value = current;
+   }
+   
+   if(symb !='÷' && symb != 'x' && symb != '+' && symb  != '-' && symb != 'AC' && symb != '=' && !fnum && symb != '.' && symb != 'pm' && symb != '%' && !dec1 ){
+      current = current*10 + parseFloat(symb);
+      scrn.value = current;
+   }
+   
+   if(symb !='÷' && symb != 'x' && symb != '+' && symb  != '-' && symb != 'AC' && symb != '=' && !fnum && symb != '.' && symb != 'pm' && symb != '%' && dec1){
+      current = current + (parseFloat(symb)/num);
+      num *=10;
+      scrn.value = current;
+
+      if (symb == 0 && num == 100){
+         scrn.value = current + '.0';
+      }
+   }
+  
+   if(symb == '+' && current != 0 && sign == null){
+      scrn.value = '';
+      dec1 = false;
+      fnum = true;
+      sign = 0;
+   }
+   if(symb == 'x' && current != 0 && sign == null){
+      scrn.value = '';
+      dec1 = false;
+      fnum = true;
+      sign = 1;
+   }
+   if(symb == '-' && current != 0 && sign == null){
+      scrn.value = '';
+      dec1 = false;
+      fnum = true;
+      sign = 2;
+   }
+   if(symb == '÷' && current != 0 && sign == null){
+      scrn.value = '';
+      dec1 = false;
+      fnum = true;
+      sign = 3;
+   }
+   if(symb == '%' && current!=0 && sign == null){
+      scrn.value = current + '%';
+      mod = true;
+      dec1 = false;
+      fnum = true;
+      sign = 4;
+   }
+
+
+   if(symb !='÷' && symb != 'x' && symb != '+' && symb  != '-' && symb != 'AC' && symb != '=' && fnum && sign != null && symb != '.' && symb != 'pm' && symb != '%' && !dec2){
+      current2 = current2*10 + parseFloat(symb);
+      scrn.value = current2;
+   }
+   if(symb !='÷' && symb != 'x' && symb != '+' && symb  != '-' && symb != 'AC' && symb != '=' && fnum && symb != '.' && symb != 'pm' && symb != '%' && dec2){
+      current2 = current2 + (parseFloat(symb)/num2);
+      num2 *=10;
+      scrn.value = current2;
+
+      if (symb == 0 && num2 == 100){
+         scrn.value = current2 + '.0';
+      }
+   
+   }
+
+   if (symb == 'pm' && current2 != 0 && fnum){
+      current2 = current2 * -1;
+      scrn.value = current2;
+   }
+   
+   if (symb == '=' && mod && current2==0){
+      val = operation(sign,current,1);
+      scrn.value = val;
+      mod = false;
+      dec2 = false;
+      current = val;
+      current2 =0;
+      sign =null;
+   }
+   else if (symb == '=' && sign == null){
+      val = current;
+      scrn.value = val;
+   }
+   else if(symb == '='){
+      val = operation(sign,current,current2);
+      scrn.value = val;
+      dec2 = false;
+      current = val;
+      current2 =0;
+      sign =null;
+   }
+   
+   
+   if (symb == 'AC'){
+      fnum = false;
+      mod = false;
+      dec1 = false;
+      dec2 = false;
+      scrn.value = '';
+      current = 0;
+      current2 = 0;
+      sign = null;
+      val = 0;
+      num1 = 10;
+      num2 = 10;
+   }
+
+
+function operation(sign,val1,val2){
+   switch (sign){
+      case 0:
+         return val1+val2;
+      case 1:
+         return val1*val2;
+      case 2:
+         return val1-val2;
+      case 3:
+         return val1/val2;
+      case 4:
+         return (val1/100)*val2;
+   }
+}
+}
+//ADD FUNCTIONALITY FOR THE DELETE BUTTON AND ADD A SCREEN ON TOP(INVISIBLE), THAT INPUTS WHAT THE USER HAS ENTERED SO FAR AND UPDATES WHEN '=
+//IS ENTERED ALSO FIX DECIMAL ISSUE WHEN USER ENTERS MULTIPLE ZEROS BEFORE NUMBER IN DECIMAL AS WELL AS WHEN YOU ENTER A DECIMAL AND HIT =
+</script>
+
+<style>
+   
+   h1 {
+    font-family:sans-serif;
+   font-size: 300%;
+   }  
+   #display{
+      color: #ffecfc;
+      font-size: 200%;
+   }
+   body {
+    background-color:#f3f3f3;
+   
+   }
+
+input[type=text] {
+   text-align: right;
+   padding: 15px 5.2pc;
+   display: inline-block;
+   font-size: 200%;
+   background-color:#f3f3f3;
+   font-family:sans-serif;
+   border: 0;
+}
+input[type=text]:after{
+   border: 1px;;
+}
+input[type=button]{
+   padding: 10% 41% ;
+   font-size:large;
+   font-family:sans-serif;
+   background-color:#f9f9f9;
+   border-radius: 5px;
+   border: 1px solid #eaeaea;  
+}
+input[type=button]:hover{
+   opacity: 50%;
+}
+input[type=button]:active{
+   box-shadow: 0 3px rgb(126, 70, 132);
+}
+#equal{
+   background-color: #903ca4;
+}
+
+
+
+</style>
+
+	
