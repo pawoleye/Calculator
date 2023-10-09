@@ -1,2 +1,2 @@
 # Calculator
-Incorporated javascript to html and style with a bit of CSS to build a non-scientific calculator.
+Incorporated javascript to html and a little CSS to build a non-scientific calculator.
